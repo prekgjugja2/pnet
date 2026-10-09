@@ -48,6 +48,10 @@
       {
         "from": "../scripts/pnet-dns.ps1",
         "to": "scripts/pnet-dns.ps1"
+      },
+      {
+        "from": "vendor/AdGuardHome",
+        "to": "vendor/AdGuardHome"
       }
     ],
     "win": {

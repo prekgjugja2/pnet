@@ -8,7 +8,7 @@ param(
     [string]$SourceDir = '',
     [string]$PasswordHash = '',
     [string]$DnsServer = '127.0.0.1',
-    [string]$ReleaseUrl = 'https://github.com/AdguardTeam/AdGuardHome/releases/latest/download/AdGuardHome_windows_amd64.zip'
+    [string]$ReleaseUrl = 'https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.79/AdGuardHome_windows_amd64.zip'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -87,9 +87,35 @@ function Ensure-Firewall {
     }
 }
 
+function Get-BundledAghDir {
+    $scriptDir = Split-Path -Parent $PSCommandPath
+    $candidates = @(
+        (Join-Path $scriptDir '..\desktop\vendor\AdGuardHome'),
+        (Join-Path $scriptDir '..\vendor\AdGuardHome')
+    )
+    foreach ($dir in $candidates) {
+        $full = [System.IO.Path]::GetFullPath($dir)
+        if (Test-Path -LiteralPath (Join-Path $full 'AdGuardHome.exe')) {
+            return $full
+        }
+    }
+    return $null
+}
+
 function Ensure-Binary {
     if (Test-Path -LiteralPath $exe) { return }
     New-Item -ItemType Directory -Force -Path $WorkDir | Out-Null
+    $bundled = Get-BundledAghDir
+    if ($bundled) {
+        Copy-Item -LiteralPath (Join-Path $bundled 'AdGuardHome.exe') -Destination $exe -Force
+        foreach ($name in @('LICENSE.txt', 'README.md', 'CHANGELOG.md', 'README.txt')) {
+            $src = Join-Path $bundled $name
+            if (Test-Path -LiteralPath $src) {
+                Copy-Item -LiteralPath $src -Destination (Join-Path $WorkDir $name) -Force
+            }
+        }
+        return
+    }
     $zip = Join-Path $env:TEMP ("AdGuardHome_windows_amd64_{0}.zip" -f [guid]::NewGuid().ToString('N'))
     try {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12

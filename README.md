@@ -38,7 +38,15 @@ Other brands can still be scanned on the LAN. Their admin pages open in the desk
 
 ## How site blocking works
 
-Blocking runs on the PC that hosts PNet, using [AdGuard Home](https://github.com/AdguardTeam/AdGuardHome). The binary is downloaded into `%LOCALAPPDATA%\PNet\AdGuardHome` the first time you start the network blocker. It is not stored in this repository.
+Whole-network blocking is done by **AdGuard Home**, a free DNS server that blocks ads and trackers for every device that uses it. AdGuard Home is written and published by the [AdGuard Team](https://github.com/AdguardTeam/AdGuardHome) ([AdGuard](https://adguard.com/)). PNet did not write it. PNet starts that program, gives it the block lists you turn on, and points your home DNS at this PC.
+
+This repository includes an unmodified Windows build, **AdGuard Home v0.107.79**, taken from AdGuard’s official release:
+
+https://github.com/AdguardTeam/AdGuardHome/releases/tag/v0.107.79
+
+The executable, AdGuard’s GPL-3.0 license, readme, and changelog are in `desktop/vendor/AdGuardHome/`. See `desktop/vendor/AdGuardHome/README.txt` for the exact package URL. The first time you start the network blocker, PNet copies that build into `%LOCALAPPDATA%\PNet\AdGuardHome`. If the bundled file is missing, PNet downloads the same v0.107.79 package from AdGuard.
+
+The big ad list is also AdGuard’s, and it is separate from the program. When you turn on **AdGuard list**, PNet downloads the [AdGuard DNS filter](https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt) and hands those domains to AdGuard Home. Adult, social, games, streaming, and custom sites are PNet lists on top of that.
 
 1. Turn on the AdGuard list, the adult list, category lists, or your own domains.
 2. Start the network blocker from the desktop app.
@@ -73,7 +81,7 @@ The console only answers clients that are on the same home network. Pages are `n
 
 ## Run it
 
-**Installed app.** Double-click `PNet-Setup.exe` after you build it (see below). It installs a desktop shortcut named PNet. Apache (XAMPP) needs to be running; the app tries to start it.
+**Installed app.** Download [`install/PNet-Setup.exe`](install/PNet-Setup.exe) from this repo (or use the copy in the project root after a local build) and double-click it. It installs a desktop shortcut named PNet. Apache (XAMPP) needs to be running; the app tries to start it.
 
 **From this folder.**
 
@@ -101,7 +109,7 @@ One shot (compiler check, scanner, Electron installer):
 scripts\build-setup.bat
 ```
 
-The installer is written to `desktop\dist\` and copied to `PNet-Setup.exe` in the project root. That exe, `desktop\node_modules\`, `desktop\dist\`, and `engine\build\` are gitignored.
+The installer is written to `desktop\dist\` and copied to `PNet-Setup.exe` in the project root. The published copy people download is `install/PNet-Setup.exe`. The root exe, `desktop\node_modules\`, `desktop\dist\`, and `engine\build\` are gitignored.
 
 Scanner only:
 
@@ -130,17 +138,18 @@ CMake is also available (`engine/CMakeLists.txt`) if you prefer that to `build.b
 | `assets/` | Console CSS, JS, and device / brand icons |
 | `engine/` | C/C++ scanner and traffic monitor |
 | `desktop/` | Electron shell, DNS helper, installer config |
+| `desktop/vendor/AdGuardHome/` | Unmodified AdGuard Home v0.107.79 from the AdGuard Team (GPL-3.0) |
 | `scripts/` | Build, compiler/PHP checks, agent installer, hosts and DNS helpers |
 | `data/` | SQLite database (not committed) |
-| `setup/pnet_setup.cpp` | Native setup helper |
+| `install/PNet-Setup.exe` | Windows installer download |
 
 ## What stays off GitHub
 
 `.gitignore` already excludes:
 
 - `data/*.sqlite` and router session files (device list, block rules, router username and password)
-- `engine/build/`, `desktop/node_modules/`, `desktop/dist/`, `PNet-Setup.exe`
-- AdGuard Home (downloaded at runtime into `%LOCALAPPDATA%\PNet`)
+- `engine/build/`, `desktop/node_modules/`, `desktop/dist/`, and the root `PNet-Setup.exe` (the downloadable copy is `install/PNet-Setup.exe`)
+- The working copy of AdGuard Home under `%LOCALAPPDATA%\PNet` (config, logs, and the copy made at startup). The official binary that PNet ships is in `desktop/vendor/AdGuardHome/`
 
 Do not commit a backup JSON from **Settings → Download backup**. It contains the same local data.
 
@@ -150,4 +159,6 @@ Do not commit a backup JSON from **Settings → Download backup**. It contains t
 
 PNet is released under the [MIT License](LICENSE).
 
-AdGuard Home is a separate project. PNet downloads it on first use and does not redistribute its binary. Brand icons under `assets/brands/` are simple marks for the device list.
+AdGuard Home v0.107.79 in `desktop/vendor/AdGuardHome/` is not part of that MIT license. It is an unmodified copy from the AdGuard Team, licensed under the GNU GPL v3. Their license, readme, and changelog are in that folder. Source code: https://github.com/AdguardTeam/AdGuardHome
+
+Brand icons under `assets/brands/` are simple marks for the device list.
