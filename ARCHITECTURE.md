@@ -46,7 +46,7 @@ Talks to the native engine over JSON (same pattern as Fing Desktop → Fing Agen
 
 ### Easy Windows installer (.exe)
 
-**For normal use:** double-click `PNet-Setup.exe` in the project root.
+**For normal use:** double-click `install/PNet-Setup.exe` (also copied to `PNet-Setup.exe` in the project root when you build locally).
 
 Rebuild (developers):
 

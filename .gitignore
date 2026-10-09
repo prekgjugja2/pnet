@@ -2,7 +2,7 @@ engine/build/
 desktop/node_modules/
 desktop/dist/
 dist/
-PNet-Setup.exe
+/PNet-Setup.exe
 
 # Runtime data: database, router sessions, caches, AdGuard config
 data/**

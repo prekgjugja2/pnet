@@ -142,6 +142,7 @@ CMake is also available (`engine/CMakeLists.txt`) if you prefer that to `build.b
 | `scripts/` | Build, compiler/PHP checks, agent installer, hosts and DNS helpers |
 | `data/` | SQLite database (not committed) |
 | `install/PNet-Setup.exe` | Windows installer download |
+| `setup/pnet_setup.cpp` | Native setup helper |
 
 ## What stays off GitHub
 
