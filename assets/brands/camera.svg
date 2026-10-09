@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Camera">
+  <rect width="64" height="64" rx="14" fill="#fee2e2"/>
+  <rect x="12" y="22" width="40" height="24" rx="4" fill="#dc2626"/>
+  <circle cx="32" cy="34" r="8" fill="#fff"/>
+  <circle cx="32" cy="34" r="5" fill="#dc2626"/>
+  <rect x="24" y="16" width="10" height="6" rx="2" fill="#dc2626"/>
+</svg>

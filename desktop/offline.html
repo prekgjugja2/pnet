@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PNet</title>
+  <style>
+    :root {
+      --bg: #14120f;
+      --text: #f3eee6;
+      --muted: #a39a8c;
+      --accent: #e6b15a;
+      --line: #2e2a24;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(800px 420px at 15% 0%, rgba(230,177,90,.14), transparent 55%),
+        var(--bg);
+      padding: 24px;
+    }
+    .card {
+      width: min(420px, 100%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px 24px;
+      background: rgba(28,25,21,.92);
+      text-align: center;
+    }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    p { margin: 0 0 18px; color: var(--muted); line-height: 1.45; }
+    .spinner {
+      width: 28px; height: 28px; margin: 0 auto 16px;
+      border: 3px solid rgba(230,177,90,.25);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 16px;
+      background: var(--accent);
+      color: #1a1408;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+    button.ghost {
+      margin-top: 8px;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div id="spin" class="spinner"></div>
+    <h1>PNet</h1>
+    <p id="msg">Starting your home network console…</p>
+    <button id="retry" class="hidden" type="button">Try again</button>
+    <button id="xampp" class="ghost hidden" type="button">Open XAMPP</button>
+  </div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const status = params.get('status') || 'starting';
+    const msg = document.getElementById('msg');
+    const spin = document.getElementById('spin');
+    const retry = document.getElementById('retry');
+    const xampp = document.getElementById('xampp');
+
+    if (status === 'offline') {
+      spin.classList.add('hidden');
+      msg.textContent = 'Apache is not running. Start Apache in XAMPP, then click Try again.';
+      retry.classList.remove('hidden');
+      xampp.classList.remove('hidden');
+    }
+
+    retry.addEventListener('click', async () => {
+      spin.classList.remove('hidden');
+      msg.textContent = 'Connecting to http://localhost/pnet/ …';
+      retry.classList.add('hidden');
+      xampp.classList.add('hidden');
+      const ok = await window.pnet.openWebapp();
+      if (!ok) {
+        spin.classList.add('hidden');
+        msg.textContent = 'Still cannot reach the web app. Start Apache in XAMPP Control Panel.';
+        retry.classList.remove('hidden');
+        xampp.classList.remove('hidden');
+      }
+    });
+
+    xampp.addEventListener('click', () => {
+      // best-effort: user starts Apache manually
+      msg.textContent = 'Open XAMPP Control Panel and click Start next to Apache, then Try again.';
+    });
+
+    if (status === 'starting') {
+      // main process will navigate away when ready
+    }
+  </script>
+</body>
+</html>

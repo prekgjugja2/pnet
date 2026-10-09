@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PNet</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <p class="eyebrow">Desktop · C/C++ engine</p>
+        <h1 id="title">PNet</h1>
+      </div>
+      <div class="actions">
+        <button id="btn-ports" class="ghost" type="button">Scan + ports</button>
+        <button id="btn-scan" type="button">Discover devices</button>
+      </div>
+    </header>
+    <p class="meta" id="meta">Build the engine, then scan your Wi‑Fi.</p>
+    <div id="status" class="status" hidden></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Device</th>
+            <th>IP</th>
+            <th>MAC</th>
+            <th>Vendor</th>
+            <th>Ping</th>
+            <th>Ports</th>
+          </tr>
+        </thead>
+        <tbody id="rows">
+          <tr><td colspan="6" class="empty">No scan yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="renderer.js"></script>
+</body>
+</html>

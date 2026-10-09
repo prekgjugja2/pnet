@@ -1,0 +1,14 @@
+PNet — how to use
+=================
+
+YOU ONLY NEED ONE FILE:
+
+  PNet-Setup.exe
+
+1. Double-click PNet-Setup.exe
+2. Install finishes and PNet opens
+3. Electron shows the FULL web app (same as localhost/pnet)
+
+Need Apache running (XAMPP). PNet tries to start it for you.
+
+Next time: Desktop shortcut "PNet" or "Open PNet.bat"

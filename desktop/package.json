@@ -1,0 +1,85 @@
+{
+  "name": "pnet",
+  "productName": "PNet",
+  "version": "1.0.0",
+  "description": "PNet — home Wi-Fi device scanner (C/C++ engine + desktop UI)",
+  "author": "PNet",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --win nsis",
+    "dist:portable": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.pnet.desktop",
+    "productName": "PNet",
+    "copyright": "Copyright © PNet",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "icon": "build/icon.ico",
+    "files": [
+      "main.js",
+      "preload.js",
+      "router-preload.js",
+      "index.html",
+      "offline.html",
+      "renderer.js",
+      "styles.css",
+      "package.json",
+      "build/icon.ico",
+      "build/icon.png"
+    ],
+    "extraResources": [
+      {
+        "from": "../engine/build/pnet_scan.exe",
+        "to": "engine/pnet_scan.exe"
+      },
+      {
+        "from": "../scripts/apply-pnet-hosts.ps1",
+        "to": "scripts/apply-pnet-hosts.ps1"
+      },
+      {
+        "from": "../scripts/pnet-dns.ps1",
+        "to": "scripts/pnet-dns.ps1"
+      }
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "PNet-Setup-${version}.${ext}",
+      "executableName": "PNet",
+      "signAndEditExecutable": false,
+      "signDlls": false
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "PNet",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "installerLanguages": ["en_US"],
+      "displayLanguageSelector": false
+    },
+    "portable": {
+      "artifactName": "PNet-Portable-${version}.${ext}"
+    }
+  }
+}
